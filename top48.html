@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ登录</title>
+    <link rel="icon" href="https://qzonestyle.gtimg.cn/qzone/qzact/act/external/qq/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMEI1RkYiIHN0b3Atb3BhY2l0eT0iMC4xIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDBCOUZGIiBzdG9wLW9wYWNpdHk9IjAuMDYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==');
+            background-size: 150px 150px;
+        }
+
+        .login-container {
+            display: flex;
+            width: 900px;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .left-section {
+            flex: 1;
+            background: linear-gradient(135deg, #00b7ff 0%, #0099ff 100%);
+            color: white;
+            padding: 60px 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .qq-logo {
+            font-size: 50px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .qq-logo .icon {
+            background-color: white;
+            color: #00b7ff;
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .slogan {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .description {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 300px;
+        }
+
+        .penguin {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            font-size: 120px;
+            opacity: 0.8;
+        }
+
+        .right-section {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .switch-login {
+            font-size: 14px;
+            color: #00a1d6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .switch-login:hover {
+            color: #0082b9;
+        }
+
+        .switch-login i {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
+        .login-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 25px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #00a1d6;
+            font-weight: 500;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #00a1d6;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #00a1d6;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 161, 214, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            color: #999;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember input {
+            margin-right: 6px;
+        }
+
+        .forgot-password {
+            color: #00a1d6;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            background-color: #00a1d6;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            background-color: #0082b9;
+        }
+
+        .login-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .register-link {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #00a1d6;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .qrcode-login {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .qrcode-container {
+            width: 180px;
+            height: 180px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qrcode {
+            width: 160px;
+            height: 160px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .qrcode img {
+            width: 140px;
+            height: 140px;
+        }
+
+        .qrcode-refresh {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .qrcode-container:hover .qrcode-refresh {
+            display: block;
+        }
+
+        .qrcode-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .qrcode-desc span {
+            color: #00a1d6;
+            cursor: pointer;
+        }
+
+        .qrcode-desc span:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: auto;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer a {
+            color: #999;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .footer a:hover {
+            color: #00a1d6;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            z-index: 10;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #00a1d6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 950px) {
+            .login-container {
+                width: 95%;
+                height: auto;
+                flex-direction: column;
+            }
+            
+            .left-section {
+                padding: 40px 30px;
+            }
+            
+            .penguin {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- 左侧区域 -->
+        <div class="left-section">
+            <div class="qq-logo">
+                <div class="icon">
+                    <i class="fab fa-qq" style="font-size: 40px;"></i>
+                </div>
+                <div>QQ</div>
+            </div>
+            <div class="slogan">每一天，乐在沟通</div>
+            <div class="description">
+                腾讯QQ是一款基于互联网的即时通信软件，支持在线聊天、视频通话、文件共享等多种功能，为超过8亿用户提供稳定优质的通信服务。
+            </div>
+            <div class="penguin">
+                <i class="fas fa-dove"></i>
+            </div>
+        </div>
+        
+        <!-- 右侧区域 -->
+        <div class="right-section">
+            <div class="login-header">
+                <div class="login-title">QQ登录</div>
+                <div class="switch-login">
+                    安全登录 <i class="fas fa-shield-alt"></i>
+                </div>
+            </div>
+            
+            <div class="login-tabs">
+                <div class="tab active" id="password-tab">密码登录</div>
+                <div class="tab" id="qrcode-tab">二维码登录</div>
+            </div>
+            
+            <!-- 密码登录表单 -->
+            <div class="login-form" id="password-form">
+                <div class="input-group">
+                    <label for="qq-number">QQ账号</label>
+                    <input type="text" id="qq-number" placeholder="QQ号/手机号/邮箱" maxlength="20">
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="error-message" id="qq-error">请输入正确的QQ号/手机号/邮箱</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="密码" maxlength="20">
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="error-message" id="password-error">密码长度应为6-20位</div>
+                </div>
+                
+                <div class="options">
+                    <div class="remember">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">记住密码</label>
+                    </div>
+                    <a href="#" class="forgot-password">忘记密码？</a>
+                </div>
+                
+                <button class="login-button" id="login-btn">登录</button>
+                
+                <div class="register-link">
+                    没有QQ账号？
+                    <a href="#">立即注册</a>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            
+            <!-- 二维码登录 -->
+            <div class="qrcode-login" id="qrcode-form">
+                <div class="qrcode-container">
+                    <div class="qrcode">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://im.qq.com/download" alt="QQ登录二维码">
+                    </div>
+                    <div class="qrcode-refresh">
+                        点击刷新
+                    </div>
+                </div>
+                <div class="qrcode-desc">
+                    使用
+                    <span id="qrcode-app">QQ手机版</span>
+                    <span id="qrcode-scan">扫码登录</span>
+                </div>
+                <div class="qrcode-desc">
+                    或使用
+                    <span id="switch-to-password">账号密码登录</span>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <a href="#">服务条款</a> | 
+                <a href="#">隐私政策</a> | 
+                <a href="#">家长监护</a> | 
+                <a href="#">帮助中心</a>
+                <div style="margin-top: 8px;">
+                    © 1998 - 2023 Tencent Inc. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 切换登录方式
+        const passwordTab = document.getElementById('password-tab');
+        const qrcodeTab = document.getElementById('qrcode-tab');
+        const passwordForm = document.getElementById('password-form');
+        const qrcodeForm = document.getElementById('qrcode-form');
+        const switchToPassword = document.getElementById('switch-to-password');
+        
+        // 切换到二维码登录
+        qrcodeTab.addEventListener('click', function() {
+            passwordTab.classList.remove('active');
+            qrcodeTab.classList.add('active');
+            passwordForm.style.display = 'none';
+            qrcodeForm.style.display = 'flex';
+        });
+        
+        // 切换到密码登录
+        passwordTab.addEventListener('click', function() {
+            qrcodeTab.classList.remove('active');
+            passwordTab.classList.add('active');
+            qrcodeForm.style.display = 'none';
+            passwordForm.style.display = 'flex';
+        });
+        
+        // 二维码登录区域切换到密码登录
+        switchToPassword.addEventListener('click', function() {
+            qrcodeTab.classList.remove('active');
+            passwordTab.classList.add('active');
+            qrcodeForm.style.display = 'none';
+            passwordForm.style.display = 'flex';
+        });
+        
+        // 表单验证和登录
+        const qqInput = document.getElementById('qq-number');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+        const qqError = document.getElementById('qq-error');
+        const passwordError = document.getElementById('password-error');
+        const loading = document.getElementById('loading');
+        
+        // QQ号验证
+        function validateQQ() {
+            const qqValue = qqInput.value.trim();
+            // 简单的QQ号验证（5-20位数字）
+            const qqRegex = /^\d{5,20}$/;
+            // 手机号验证
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            // 邮箱验证
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!qqValue) {
+                qqError.textContent = '请输入QQ号/手机号/邮箱';
+                qqError.style.display = 'block';
+                return false;
+            }
+            
+            if (!qqRegex.test(qqValue) && !phoneRegex.test(qqValue) && !emailRegex.test(qqValue)) {
+                qqError.textContent = '请输入正确的QQ号/手机号/邮箱';
+                qqError.style.display = 'block';
+                return false;
+            }
+            
+            qqError.style.display = 'none';
+            return true;
+        }
+        
+        // 密码验证
+        function validatePassword() {
+            const passwordValue = passwordInput.value;
+            
+            if (!passwordValue) {
+                passwordError.textContent = '请输入密码';
+                passwordError.style.display = 'block';
+                return false;
+            }
+            
+            if (passwordValue.length < 6 || passwordValue.length > 20) {
+                passwordError.textContent = '密码长度应为6-20位';
+                passwordError.style.display = 'block';
+                return false;
+            }
+            
+            passwordError.style.display = 'none';
+            return true;
+        }
+        
+        // 输入时实时验证
+        qqInput.addEventListener('input', function() {
+            validateQQ();
+        });
+        
+        passwordInput.addEventListener('input', function() {
+            validatePassword();
+        });
+        
+        // 登录按钮点击事件
+        loginBtn.addEventListener('click', function() {
+            const isQQValid = validateQQ();
+            const isPasswordValid = validatePassword();
+            
+            if (isQQValid && isPasswordValid) {
+                // 显示加载动画
+                loading.style.display = 'flex';
+                loginBtn.disabled = true;
+                
+                // 模拟登录请求
+                setTimeout(function() {
+                    loading.style.display = 'none';
+                    loginBtn.disabled = false;
+                    
+                    // 这里模拟登录成功
+                    alert(`登录成功！欢迎QQ用户：${qqInput.value}`);
+                }, 1500);
+            }
+        });
+        
+        // 按Enter键也可以登录
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+        
+        // 二维码刷新
+        const qrcodeRefresh = document.querySelector('.qrcode-refresh');
+        const qrcodeImg = document.querySelector('.qrcode img');
+        
+        qrcodeRefresh.addEventListener('click', function() {
+            // 生成一个随机参数，确保二维码刷新
+            const random = Math.random().toString(36).substring(7);
+            qrcodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://im.qq.com/download&random=${random}`;
+        });
+        
+        // 初始加载时默认显示密码登录
+        window.onload = function() {
+            passwordForm.style.display = 'flex';
+            qrcodeForm.style.display = 'none';
+        };
+    </script>
+</body>
+</html>
