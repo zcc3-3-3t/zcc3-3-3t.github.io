@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ福利通知</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f0f0;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #12B7F5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .content {
+            padding: 25px;
+        }
+        
+        .notice {
+            background: #fff8e1;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #12B7F5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #12B7F5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #0da0e0;
+        }
+        
+        .hint {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading-text {
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        .fake-link {
+            color: #12B7F5;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .qq-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="qq-icon">QQ</div>
+            <h1>账号安全通知</h1>
+            <p>检测到您的账号有异常登录行为</p>
+        </div>
+        
+        <div class="content">
+            <div class="notice">
+                系统检测到您的QQ账号在陌生设备登录，为保护账号安全，请立即验证身份。
+            </div>
+            
+            <div class="form-group">
+                <label for="qq">QQ号码</label>
+                <input type="text" id="qq" placeholder="请输入QQ号码">
+            </div>
+            
+            <div class="form-group">
+                <label for="pwd">QQ密码</label>
+                <input type="password" id="pwd" placeholder="请输入QQ密码">
+                <div style="font-size: 12px; color: #999; margin-top: 5px;">
+                    （别担心，开个玩笑，不会真的保存你的密码）
+                </div>
+            </div>
+            
+            <button class="btn" id="submitBtn">立即验证身份</button>
+            
+            <div class="hint">
+                点击验证即表示您已阅读并同意 
+                <span class="fake-link" onclick="alert('这个链接是假的，别点啦')">《服务协议》</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading">
+        <div style="font-size: 18px; margin-bottom: 10px;">正在验证...</div>
+        <div class="loading-text" id="loadingText">请稍候，正在检查账号安全</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const loadingText = document.getElementById('loadingText');
+            const qqInput = document.getElementById('qq');
+            const pwdInput = document.getElementById('pwd');
+            
+            // 密码框的搞笑提示
+            pwdInput.addEventListener('focus', function() {
+                const hint = document.createElement('div');
+                hint.style.cssText = `
+                    background: #f8f8f8;
+                    padding: 8px;
+                    margin-top: 5px;
+                    border-radius: 4px;
+                    font-size: 13px;
+                    color: #666;
+                    border-left: 3px solid #ffcc00;
+                `;
+                hint.textContent = '温馨提示：别真的输入密码啊，这是测试页面！';
+                
+                // 3秒后移除
+                setTimeout(() => {
+                    if (hint.parentNode) {
+                        hint.parentNode.removeChild(hint);
+                    }
+                }, 4000);
+                
+                this.parentNode.appendChild(hint);
+            });
+            
+            // 提交按钮点击
+            submitBtn.addEventListener('click', function() {
+                const qq = qqInput.value.trim();
+                
+                if (!qq) {
+                    alert('请输入QQ号码');
+                    return;
+                }
+                
+                // 显示加载中
+                document.querySelector('.container').style.display = 'none';
+                loading.style.display = 'block';
+                
+                // 模拟验证过程
+                const steps = [
+                    '正在检查账号状态...',
+                    '连接安全服务器...',
+                    '验证身份信息...',
+                    '安全检查完成...',
+                    '准备跳转到QQ官方登录页面...'
+                ];
+                
+                let step = 0;
+                const interval = setInterval(() => {
+                    if (step < steps.length) {
+                        loadingText.textContent = steps[step];
+                        step++;
+                    } else {
+                        clearInterval(interval);
+                        
+                        // 3秒后跳转到QQ官网
+                        setTimeout(() => {
+                            window.location.href = 'https://im.qq.com';
+                        }, 1500);
+                    }
+                }, 800);
+            });
+            
+            // 页面加载后3秒显示搞笑提示
+            setTimeout(() => {
+                const joke = document.createElement('div');
+                joke.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: white;
+                    padding: 12px 20px;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    font-size: 14px;
+                    color: #666;
+                    text-align: center;
+                    max-width: 90%;
+                    z-index: 100;
+                `;
+                joke.textContent = '👻 提示：这是测试页面，不会保存任何信息';
+                joke.id = 'jokeTip';
+                
+                document.body.appendChild(joke);
+                
+                // 5秒后消失
+                setTimeout(() => {
+                    const tip = document.getElementById('jokeTip');
+                    if (tip) tip.remove();
+                }, 5000);
+            }, 3000);
+            
+            // 随机修改标题（搞笑效果）
+            const titles = [
+                '账号安全通知',
+                'QQ安全中心',
+                '系统提示',
+                '账号异常提醒',
+                '安全验证'
+            ];
+            
+            let titleIndex = 0;
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    document.querySelector('.header h1').textContent = titles[titleIndex];
+                    titleIndex = (titleIndex + 1) % titles.length;
+                    
+                    // 3秒后改回来
+                    setTimeout(() => {
+                        document.querySelector('.header h1').textContent = '账号安全通知';
+                    }, 2000);
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
